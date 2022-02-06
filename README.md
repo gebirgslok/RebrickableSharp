@@ -139,4 +139,16 @@ var black = await client.GetColorAsync(colorId, includeDetails: true);
 
 ### Elements
 
-#### 
+#### Get element
+
+```csharp
+// API
+Task<Element> GetElementAsync(string elementId, 
+    CancellationToken cancellationToken = default);  
+```
+
+```csharp
+// Example
+var elementId = "300521"; //1x1 Brick in Red
+var element = await client.GetElementAsync(elementId);
+```
