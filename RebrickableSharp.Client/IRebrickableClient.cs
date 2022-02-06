@@ -27,14 +27,14 @@ namespace RebrickableSharp.Client;
 
 public interface IRebrickableClient : IDisposable
 {
-    Task<Response<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
+    Task<PagedResponse<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
         bool includeDetails = false,
         CancellationToken cancellationToken = default);
 
     Task<Color> GetColorAsync(int colorId, bool includeDetails = false, 
         CancellationToken cancellationToken = default);
 
-    Task<Response<Part>> GetPartsAsync(int page = 1, int pageSize = 100, 
+    Task<PagedResponse<Part>> GetPartsAsync(int page = 1, int pageSize = 100, 
         bool includeDetails = false, string? bricklinkId = null,
         string? partNumber = null, IEnumerable<string>? partNumbers = null,
         int? categoryId = null, string? brickOwlId = null,
@@ -42,5 +42,14 @@ public interface IRebrickableClient : IDisposable
         string? searchTerm = null,
         CancellationToken cancellationToken = default);
 
-    Task<Element> GetElementAsync(string elementId, CancellationToken cancellationToken = default);     
+    Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
+        bool includeDetails = false,
+        CancellationToken cancellationToken = default);
+
+    Task<PartColorDetails> GetPartColorDetailsAsync(string partNumber, int colorId,
+        CancellationToken cancellationToken = default);
+
+    Task<Element> GetElementAsync(string elementId, 
+        CancellationToken cancellationToken = default);
+    
 }

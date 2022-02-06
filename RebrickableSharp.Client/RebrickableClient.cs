@@ -104,7 +104,7 @@ internal sealed class RebrickableClient : IRebrickableClient
         _isDisposed = true;
     }
 
-    public async Task<Response<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
+    public async Task<PagedResponse<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
         bool includeDetails = false,
         CancellationToken cancellationToken = default)
     {
@@ -116,7 +116,7 @@ internal sealed class RebrickableClient : IRebrickableClient
 
         var url = builder.ToString();
 
-        var getColorsResponse = await ExecuteRequest<Response<Color>>(url, HttpMethod.Get, cancellationToken);
+        var getColorsResponse = await ExecuteRequest<PagedResponse<Color>>(url, HttpMethod.Get, cancellationToken);
         return getColorsResponse;
     }
 
@@ -132,7 +132,7 @@ internal sealed class RebrickableClient : IRebrickableClient
         return color;
     }
 
-    public async Task<Response<Part>> GetPartsAsync(int page = 1, int pageSize = 100,
+    public async Task<PagedResponse<Part>> GetPartsAsync(int page = 1, int pageSize = 100,
         bool includeDetails = false, string? bricklinkId = null,
         string? partNumber = null, IEnumerable<string>? partNumbers = null,
         int? categoryId = null, string? brickOwlId = null,
@@ -156,8 +156,26 @@ internal sealed class RebrickableClient : IRebrickableClient
         builder.Query = query.ToString();
         var url = builder.ToString();
 
-        var getPartsResponse = await ExecuteRequest<Response<Part>>(url, HttpMethod.Get, cancellationToken);
+        var getPartsResponse = await ExecuteRequest<PagedResponse<Part>>(url, HttpMethod.Get, cancellationToken);
         return getPartsResponse;
+    }
+
+    public async Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
+        bool includeDetails = false,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await GetPartsAsync(pageSize: 1, includeDetails:
+            includeDetails, bricklinkId: bricklinkId, cancellationToken: cancellationToken);
+
+        return response.Results.FirstOrDefault();
+    }
+
+    public async Task<PartColorDetails> GetPartColorDetailsAsync(string partNumber, int colorId, 
+        CancellationToken cancellationToken = default)
+    {
+        var url = new Uri(_baseUri, $"lego/parts/{partNumber}/colors/{colorId}").ToString();
+        var partColorDetails = await ExecuteRequest<PartColorDetails>(url, HttpMethod.Get, cancellationToken);
+        return partColorDetails;
     }
 
     public async Task<Element> GetElementAsync(string elementId, CancellationToken cancellationToken = default)

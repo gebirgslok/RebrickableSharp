@@ -27,23 +27,17 @@ using System.Text.Json.Serialization;
 
 namespace RebrickableSharp.Client;
 
-public class Element
+public class PagedResponse<TResult>
 {
-    [JsonPropertyName("part")]
-    public Part Part { get; set; } = null!;
+    [JsonPropertyName("count")]
+    public int Count { get; set; }
 
-    [JsonPropertyName("color")]
-    public Color Color { get; set; } = null!;
+    [JsonPropertyName("next")]
+    public string? Next { get; set; }
 
-    [JsonPropertyName("element_id")]
-    public string ElementId { get; set; } = null!;
+    [JsonPropertyName("previous")]
+    public string? Previous { get; set; }
 
-    [JsonPropertyName("design_id")]
-    public string DesignId { get; set; } = null!;
-
-    [JsonPropertyName("element_img_url")]
-    public string? ElementImageUrl { get; set; }
-
-    [JsonPropertyName("part_img_url")]
-    public string? PartImageUrl { get; set; }
+    [JsonPropertyName("results")]
+    public TResult[] Results { get; set; } = Array.Empty<TResult>();
 }

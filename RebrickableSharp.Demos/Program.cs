@@ -31,12 +31,15 @@ internal static class Program
 {
     static async Task<int> Main()
     {
-        RebrickableClientConfiguration.Instance.ApiKey = "7187075a2ccf8408d82f6a0a6048e194";
+        RebrickableClientConfiguration.Instance.ApiKey = "<YOUR API KEY>";
 
         using var httpClient = new HttpClient();
-        //await PartDemos.GetPartsDemo();
-        //await ColorDemos.GetColorsDemo();
+        await PartDemos.GetPartsDemo();
+        await PartDemos.FindPartByBrickLinkIdDemo();
+        await PartDemos.GetPartColorDetailsDemo();
+        await ColorDemos.GetColorsDemo();
         await ColorDemos.GetColorDemo();
+        await ElementDemos.GetElementDemo();
         Console.ReadKey();
         return 0;
     }

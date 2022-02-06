@@ -27,47 +27,16 @@ using RebrickableSharp.Client;
 
 namespace RebrickableSharp.Demos;
 
-internal static class PartDemos
+internal static class ElementDemos
 {
-    public static async Task GetPartsDemo()
+    public static async Task GetElementDemo()
     {
         using var client = RebrickableClientFactory.Build();
 
-        var response1 = await client.GetPartsAsync(includeDetails: true,
-            page: 1,
-            pageSize: 10,
-            bricklinkId: "3001");
+        var elementId = "300521"; //1x1 Brick in Red
+        var element = await client.GetElementAsync(elementId);
 
-        PrintHelper.PrintAsJson(response1);
-        Console.WriteLine();
-
-        var response2 = await client.GetPartsAsync(includeDetails: true, 
-            page: 1, 
-            pageSize: 10, 
-            partNumbers: new[]{ "3001", "3002", "3003"});
-
-        PrintHelper.PrintAsJson(response2);
-        Console.WriteLine();
-    }
-
-    public static async Task FindPartByBrickLinkIdDemo()
-    {
-        using var client = RebrickableClientFactory.Build();
-
-        var part = await client.FindPartByBricklinkIdAsync("3005", true);
-
-        PrintHelper.PrintAsJson(part!);
-        Console.WriteLine();
-    }
-
-    public static async Task GetPartColorDetailsDemo()
-    {
-        using var client = RebrickableClientFactory.Build();
-
-        var colorId = 1; //Blue
-        var partColorDetails = await client.GetPartColorDetailsAsync("3005", colorId);
-
-        PrintHelper.PrintAsJson(partColorDetails);
+        PrintHelper.PrintAsJson(element);
         Console.WriteLine();
     }
 }

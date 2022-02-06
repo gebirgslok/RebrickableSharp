@@ -44,4 +44,9 @@ public class Color
 
     [JsonPropertyName("external_ids")]
     public ExternalColorData ExternalData { get; set; } = new();
+
+    public override string ToString()
+    {
+        return $"{Id} - {Name} ({HtmlCode}{(IsTransparent ? ", transparent" : "")})";
+    }
 }

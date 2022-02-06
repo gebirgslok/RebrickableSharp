@@ -27,17 +27,23 @@ using System.Text.Json.Serialization;
 
 namespace RebrickableSharp.Client;
 
-public class Response<TResult>
+public class PartColorDetails
 {
-    [JsonPropertyName("count")]
-    public int Count { get; set; }
+    [JsonPropertyName("part_img_url")]
+    public string? PartImageUrl { get; set; }
 
-    [JsonPropertyName("next")]
-    public string? Next { get; set; }
+    [JsonPropertyName("year_from")]
+    public int YearFrom { get; set; }
 
-    [JsonPropertyName("previous")]
-    public string? Previous { get; set; }
+    [JsonPropertyName("year_to")]
+    public int YearTo { get; set; }
 
-    [JsonPropertyName("results")]
-    public TResult[] Results { get; set; } = Array.Empty<TResult>();
+    [JsonPropertyName("num_sets")]
+    public int NumOfSets { get; set; }
+
+    [JsonPropertyName("num_set_parts")]
+    public int NumOfSetParts { get; set; }
+
+    [JsonPropertyName("elements")]
+    public string[] Elements { get; set; } = Array.Empty<string>();
 }
