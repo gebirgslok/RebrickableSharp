@@ -1,7 +1,7 @@
 # RebrickableSharp
 
 [![NuGet](https://img.shields.io/nuget/v/RebrickableSharp?color=blue)](https://www.nuget.org/packages/RebrickableSharp/)
-
+[![Build Status](https://dev.azure.com/jeisenbach/RebrickableSharp/_apis/build/status/gebirgslok.RebrickableSharp?branchName=main)](https://dev.azure.com/jeisenbach/RebrickableSharp/_build/latest?definitionId=3&branchName=main)
 
 ## Introduction
 RebrickableSharp is a strongly-typed, easy-to-use C# client for the [Rebrickable API](https://rebrickable.com/api/v3/docs/) that 
