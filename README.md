@@ -35,3 +35,51 @@ Install-Package RebrickableSharp
 ```
 nuget install RebrickableSharp
 ```
+
+### Setup credentials
+
+```csharp    
+RebrickableClientConfiguration.Instance.ApiKey = "<Your API Key>";
+```
+
+### IRebrickableClient
+```csharp  
+var client = RebrickableClientFactory.Build();
+
+// Do stuff
+
+// Client must be disposed properly
+client.Dispose();
+```
+Alternatively, an external **HttpClient** can be used:
+```csharp
+var httpClient = new HttpClient();
+var client = RebrickableClientFactory.Build(httpClient);
+
+// Do stuff
+
+// Client *and* HttpClient must be disposed properly
+client.Dispose();
+httpClient.Dispose();
+```
+
+#### Usage recommendation
+It's recommended to create and use one *IRebrickableClient* client throughout the lifetime of your application.
+
+In applications using an IoC container you may register the *IRebrickableClient* as a service and inject it into consuming instances (e.g. controllers).
+See the below examples to register the *IRebrickableClient* as single instance (Singleton).
+	
+#### [Autofac](https://autofac.org/) example
+```csharp
+containerBuilder.Register(c => RebrickableClientFactory.Build())
+	.As<IRebrickableClient>()
+	.SingleInstance();
+```
+
+#### [Microsoft.Extensions.DependencyInjection](https://docs.microsoft.com/de-de/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0) example
+```csharp
+services.AddSingleton(typeof(IRebrickableClient), provider =>
+{
+    return RebrickableClientFactory.Build();
+});  
+``` 
