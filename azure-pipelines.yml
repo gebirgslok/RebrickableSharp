@@ -48,8 +48,14 @@ steps:
       command: 'pack'
       packagesToPack: '$(System.DefaultWorkingDirectory)\$(client)\$(client).csproj'
       versioningScheme: 'off'
-      packDirectory: '$(Build.ArtifactStagingDirectory)'
-      
+
+  - task: CopyFiles@2
+    displayName: Copy Bin To ArtifactsStagingDirectory
+    inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: $(client)\bin\$(BuildConfiguration)\**
+        TargetFolder: '$(Build.ArtifactsStagingDirectory)'      
+
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifacts
     inputs:
