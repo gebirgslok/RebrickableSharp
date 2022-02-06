@@ -1,5 +1,8 @@
 # RebrickableSharp
 
+[![NuGet](https://img.shields.io/nuget/v/RebrickableSharp?color=blue)](https://www.nuget.org/packages/RebrickableSharp/)
+
+
 ## Introduction
 RebrickableSharp is a strongly-typed, easy-to-use C# client for the [Rebrickable API](https://rebrickable.com/api/v3/docs/) that 
 gets you started with just a few lines of code. It handles authentication, error handling and parsing of JSON into typed instances.
