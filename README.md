@@ -13,7 +13,7 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 
 ## Changelog
 
-### 0.1.1
+### 0.1.0
 - Authentication handling
 - HTTP request / response handling
 - New method on *IRebrickableClient*: **GetColorsAsync**. Returns a color list.
