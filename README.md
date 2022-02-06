@@ -120,6 +120,20 @@ Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
 var part = await client.FindPartByBricklinkIdAsync("3005", true);
 ```
 
+#### Get part color details
+
+```csharp
+// API
+Task<PartColorDetails> GetPartColorDetailsAsync(string partNumber, int colorId,
+    CancellationToken cancellationToken = default);
+```
+
+```csharp
+// Example
+var colorId = 1; //Blue
+var partColorDetails = await client.GetPartColorDetailsAsync("3005", colorId)
+```
+
 ### Colors
 
 #### Get colors
