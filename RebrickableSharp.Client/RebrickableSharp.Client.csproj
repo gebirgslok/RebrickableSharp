@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <!-- version numbers will be updated by build -->
+    <Version>0.1.0.0</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <InformationalVersion>0.1.0.0</InformationalVersion>
+    <PackageVersion>0.1.0</PackageVersion>
+    <Authors>Jens Eisenbach</Authors>
+    <Product>RebrickableSharp</Product>
+    <Description>Strongly-typed, easy-to-use API client for Rebrickable.</Description>
+    <Copyright>Copyright © Jens Eisenbach 2022</Copyright>
+    <Summary>Strongly-typed, easy-to-use API client for Rebrickable.</Summary>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Title>RebrickableSharp</Title>
+    <PackageId>RebrickableSharp</PackageId>
+    <PackageTags>Rebrickable;API;LEGO;MOC</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RootNamespace>RebrickableSharp.Client</RootNamespace>
+    <AssemblyName>RebrickableSharp.Client</AssemblyName>
+    <RepositoryUrl>https://github.com/gebirgslok/RebrickableSharp</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <AssemblyTitle>RebrickableSharp .Net Standard 2.0</AssemblyTitle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">
+    <AssemblyTitle>RebrickableSharp .Net Core 3.0</AssemblyTitle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+    <AssemblyTitle>RebrickableSharp .Net Core 3.1</AssemblyTitle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <AssemblyTitle>RebrickableSharp .Net 5.0</AssemblyTitle>
+    <DefineConstants>HAVE_JSON_DEFAULT_IGNORE_CONDITION;HAVE_HTTP_CONTENT_READ_CANCELLATION_TOKEN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net6.0'">
+    <AssemblyTitle>RebrickableSharp .Net 6.0</AssemblyTitle>
+    <DefineConstants>HAVE_JSON_DEFAULT_IGNORE_CONDITION;HAVE_HTTP_CONTENT_READ_CANCELLATION_TOKEN</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NullGuard.Fody" Version="3.1.0" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
