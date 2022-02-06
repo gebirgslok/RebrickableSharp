@@ -16,6 +16,7 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 - New method on *IRebrickableClient*: **GetColorsAsync**. Returns a color list.
 - New method on *IRebrickableClient*: **GetColorAsync**. Returns a specific color.
 - New method on *IRebrickableClient*: **GetPartsAsync**. Returns a part list with various filter options.
+- New method on *IRebrickableClient*: **FindPartByBricklinkIdAsync**. Find a part by its BrickLink ID.
 - New method on *IRebrickableClient*: **GetElementAsync**. Returns a specific element.
 
 ## Get Started
