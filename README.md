@@ -90,7 +90,7 @@ services.AddSingleton(typeof(IRebrickableClient), provider =>
 
 ```csharp
 // API
-Task<Response<Part>> GetPartsAsync(int page = 1, int pageSize = 100, 
+Task<PagedResponse<Part>> GetPartsAsync(int page = 1, int pageSize = 100, 
     bool includeDetails = false, string? bricklinkId = null,
     string? partNumber = null, IEnumerable<string>? partNumbers = null,
     int? categoryId = null, string? brickOwlId = null,
@@ -111,7 +111,7 @@ var parts = response.Results;
 
 ```csharp
 // API
-Task<Response<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
+Task<PagedResponse<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
     bool includeDetails = false,
     CancellationToken cancellationToken = default);
 ```
