@@ -1,5 +1,5 @@
 trigger:
-- master
+- main
 
 schedules:
 - cron: "0 0 * * *"
@@ -48,13 +48,7 @@ steps:
       command: 'pack'
       packagesToPack: '$(System.DefaultWorkingDirectory)\$(client)\$(client).csproj'
       versioningScheme: 'off'
-
-  - task: VSBuild@1
-    displayName: Build Solution
-    inputs:
-      solution: '$(solution)'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+      packDirectory: '$(Build.ArtifactStagingDirectory)'
       
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifacts
