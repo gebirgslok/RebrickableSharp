@@ -11,7 +11,7 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 ## Changelog
 
 ### 0.1.1
-- Authentcation handling
+- Authentication handling
 - HTTP request / response handling
 - New method on *IRebrickableClient*: **GetColorsAsync**. Returns a color list.
 - New method on *IRebrickableClient*: **GetColorAsync**. Returns a specific color.
@@ -21,7 +21,7 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 ## Get Started
 
 ### Demo Project
-Check out the [demo project]https://github.com/gebirgslok/RebrickableSharp/tree/main/RebrickableSharp.Demos) for full-featured examples.
+Check out the [demo project](https://github.com/gebirgslok/RebrickableSharp/tree/main/RebrickableSharp.Demos) for full-featured examples.
 
 ### Prerequisites
 You need to have an account on [Rebrickable](https://www.rebrickable.com/). Then, go to *Account > Settings > API* and create a new **Key** or use an existing one.
@@ -105,6 +105,8 @@ var response = await client.GetPartsAsync(page: 1, pageSize: 50, includeDetails:
 var parts = response.Results;
 ```
 
+### Colors
+
 #### Get colors
 
 ```csharp
@@ -134,3 +136,7 @@ Task<Color> GetColorAsync(int colorId, bool includeDetails = false,
 var colorId = 0; //black
 var black = await client.GetColorAsync(colorId, includeDetails: true);
 ```
+
+### Elements
+
+#### 
