@@ -83,3 +83,54 @@ services.AddSingleton(typeof(IRebrickableClient), provider =>
     return RebrickableClientFactory.Build();
 });  
 ``` 
+
+### Parts
+
+####  Get parts
+
+```csharp
+// API
+Task<Response<Part>> GetPartsAsync(int page = 1, int pageSize = 100, 
+    bool includeDetails = false, string? bricklinkId = null,
+    string? partNumber = null, IEnumerable<string>? partNumbers = null,
+    int? categoryId = null, string? brickOwlId = null,
+    string? legoId = null, string? lDrawId = null,
+    string? searchTerm = null,
+    CancellationToken cancellationToken = default);
+```
+
+```csharp
+// Example
+var response = await client.GetPartsAsync(page: 1, pageSize: 50, includeDetails: true, searchTerm: "M-Tron");
+var parts = response.Results;
+```
+
+#### Get colors
+
+```csharp
+// API
+Task<Response<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
+    bool includeDetails = false,
+    CancellationToken cancellationToken = default);
+```
+
+```csharp
+// Example
+var response = await client.GetColorsAsync(includeDetails: true,
+    page: 1, pageSize: 50);
+var colors = response.Results;
+```
+
+#### Get color
+
+```csharp
+// API
+Task<Color> GetColorAsync(int colorId, bool includeDetails = false, 
+    CancellationToken cancellationToken = default);
+```
+
+```csharp
+// Example
+var colorId = 0; //black
+var black = await client.GetColorAsync(colorId, includeDetails: true);
+```
