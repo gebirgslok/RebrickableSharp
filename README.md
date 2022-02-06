@@ -105,6 +105,20 @@ var response = await client.GetPartsAsync(page: 1, pageSize: 50, includeDetails:
 var parts = response.Results;
 ```
 
+#### Find part by BrickLink ID
+
+```csharp
+// API
+Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
+    bool includeDetails = false,
+    CancellationToken cancellationToken = default);
+```
+
+```csharp
+// Example
+var part = await client.FindPartByBricklinkIdAsync("3005", true);
+```
+
 ### Colors
 
 #### Get colors
