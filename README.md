@@ -56,7 +56,7 @@ var client = RebrickableClientFactory.Build();
 // Client must be disposed properly
 client.Dispose();
 ```
-Alternatively, an external **HttpClient** can be used:
+Alternatively, an **externally** managed *HttpClient* can be used:
 ```csharp
 var httpClient = new HttpClient();
 var client = RebrickableClientFactory.Build(httpClient);
