@@ -18,7 +18,9 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'  
   semVerDate: $(Get-Date -Format yyyyMMdd+HHmmss)
-  client: 'RebrickableSharp.Client'
+  rootNamespace: 'RebrickableSharp.Client'
+  pathToLibDir: '$(System.DefaultWorkingDirectory)\$(rootNamespace)\'
+  pathToLibCsproj: '$(pathToLibDir)$(rootNamespace).csproj'
 
 steps:
   - task: NuGetToolInstaller@1
@@ -40,21 +42,21 @@ steps:
     displayName: Update Build Number From Version
     inputs:
       filePath: '$(System.DefaultWorkingDirectory)\Build\update-build-number-from-version.ps1'
-      arguments: '-PathToCsprojFile $(System.DefaultWorkingDirectory)\$(client)\$(client).csproj'
+      arguments: '-PathToCsprojFile $(pathToLibCsproj)'
       
   - task: DotNetCoreCLI@2
-    displayName: Build Solution and create NuGet package
+    displayName: Build Solution And Create NuGet Package
     inputs:
       command: 'pack'
-      packagesToPack: '$(System.DefaultWorkingDirectory)\$(client)\$(client).csproj'
+      packagesToPack: '$(pathToLibCsproj)'
       versioningScheme: 'off'
-      packDirectory: $(System.DefaultWorkingDirectory)\$(client)\bin\$(buildConfiguration)
+      packDirectory: $(pathToLibDir)bin\$(buildConfiguration)
 
   - task: CopyFiles@2
     displayName: Copy Bin To ArtifactsStagingDirectory
     inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: $(client)\bin\$(BuildConfiguration)\**
+        Contents: $(rootNamespace)\bin\$(BuildConfiguration)\**
         TargetFolder: '$(Build.ArtifactsStagingDirectory)'      
 
   - task: PublishBuildArtifacts@1
