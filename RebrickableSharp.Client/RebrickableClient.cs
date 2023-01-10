@@ -160,6 +160,23 @@ internal sealed class RebrickableClient : IRebrickableClient
         return getPartsResponse;
     }
 
+        
+    public async Task<PagedResponse<SetPart>> GetSetPartsAsync(string id,
+        int page = 1, int pageSize = 100,
+        CancellationToken cancellationToken = default)
+    {
+        var builder = new UriBuilder(new Uri(_baseUri, $"lego/sets/{id}/parts"));
+        var query = HttpUtility.ParseQueryString(builder.Query);
+        query["page"] = page.ToString();
+        query["page_size"] = pageSize.ToString();
+        builder.Query = query.ToString();
+        var url = builder.ToString();
+
+        var getSetPartsResponse = await ExecuteRequest<PagedResponse<SetPart>>(url, HttpMethod.Get, cancellationToken);
+        return getSetPartsResponse;
+    }
+    
+
     public async Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
         bool includeDetails = false,
         CancellationToken cancellationToken = default)
