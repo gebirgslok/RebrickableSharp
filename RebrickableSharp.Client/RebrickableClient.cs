@@ -160,23 +160,6 @@ internal sealed class RebrickableClient : IRebrickableClient
         return getPartsResponse;
     }
 
-        
-    public async Task<PagedResponse<SetPart>> GetSetPartsAsync(string id,
-        int page = 1, int pageSize = 100,
-        CancellationToken cancellationToken = default)
-    {
-        var builder = new UriBuilder(new Uri(_baseUri, $"lego/sets/{id}/parts"));
-        var query = HttpUtility.ParseQueryString(builder.Query);
-        query["page"] = page.ToString();
-        query["page_size"] = pageSize.ToString();
-        builder.Query = query.ToString();
-        var url = builder.ToString();
-
-        var getSetPartsResponse = await ExecuteRequest<PagedResponse<SetPart>>(url, HttpMethod.Get, cancellationToken);
-        return getSetPartsResponse;
-    }
-    
-
     public async Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
         bool includeDetails = false,
         CancellationToken cancellationToken = default)
@@ -200,6 +183,41 @@ internal sealed class RebrickableClient : IRebrickableClient
         var url = new Uri(_baseUri, $"lego/elements/{elementId}").ToString();
         var element = await ExecuteRequest<Element>(url, HttpMethod.Get, cancellationToken);
         return element;
+    }
+
+    public async Task<PagedResponse<SetPart>> GetSetPartsAsync(string id,
+    int page = 1, int pageSize = 100,
+    CancellationToken cancellationToken = default)
+    {
+        var builder = new UriBuilder(new Uri(_baseUri, $"lego/sets/{id}/parts"));
+        var query = HttpUtility.ParseQueryString(builder.Query);
+        query["page"] = page.ToString();
+        query["page_size"] = pageSize.ToString();
+        builder.Query = query.ToString();
+        var url = builder.ToString();
+
+        var getSetPartsResponse = await ExecuteRequest<PagedResponse<SetPart>>(url, HttpMethod.Get, cancellationToken);
+        return getSetPartsResponse;
+    }
+
+    public async Task<PagedResponse<Set>> GetSetsAsync(int minYear, int maxYear,
+         int minParts = 0, int maxParts = 100000,
+         int page = 1, int pageSize = 100,
+         CancellationToken cancellationToken = default)
+    {
+        var builder = new UriBuilder(new Uri(_baseUri, "lego/sets"));
+        var query = HttpUtility.ParseQueryString(builder.Query);
+        query["page"] = page.ToString();
+        query["page_size"] = pageSize.ToString();
+        query["min_year"] = minYear.ToString();
+        query["max_year"] = maxYear.ToString();
+        query["min_parts"] = minParts.ToString();
+        query["max_parts"] = maxParts.ToString();
+        builder.Query = query.ToString();
+        var url = builder.ToString();
+
+        var getSetsResponse = await ExecuteRequest<PagedResponse<Set>>(url, HttpMethod.Get, cancellationToken);
+        return getSetsResponse;
     }
 
     public void Dispose()

@@ -57,5 +57,12 @@ public interface IRebrickableClient : IDisposable
         int page = 1, int pageSize = 100,
         CancellationToken cancellationToken = default);
 
+    Task<PagedResponse<Set>> GetSetsAsync(int minYear, int maxYear,
+        int minParts = 0, int maxParts = 100000,
+        int page = 1, int pageSize = 100,
+        CancellationToken cancellationToken = default);
+
+    
+
 
 }

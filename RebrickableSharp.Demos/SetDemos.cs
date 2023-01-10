@@ -29,12 +29,14 @@ namespace RebrickableSharp.Demos;
 
 internal static class SetDemos
 {
-    public static async Task GetSetParts(string id)
+    public static async Task GetSetsDemo()
     {
         using var client = RebrickableClientFactory.Build();
 
-        var response1 = await client.GetSetPartsAsync(id);
+        var setParts = await client.GetSetPartsAsync("75575-1");
+        PrintHelper.PrintAsJson(setParts);
 
-        PrintHelper.PrintAsJson(response1);        
+        var sets = await client.GetSetsAsync(2021, 2023);
+        PrintHelper.PrintAsJson(sets);
     }
 }
