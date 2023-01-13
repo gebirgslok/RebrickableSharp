@@ -32,8 +32,7 @@ internal static class Program
     static async Task<int> Main()
     {
         
-        //RebrickableClientConfiguration.Instance.ApiKey = "<YOUR API KEY>";
-        RebrickableClientConfiguration.Instance.ApiKey = "7187075a2ccf8408d82f6a0a6048e194";
+        RebrickableClientConfiguration.Instance.ApiKey = "<YOUR API KEY>";
         using var httpClient = new HttpClient();
         //await PartDemos.GetPartsDemo();
         await PartDemos.GetPartsTestGithubIssue1();
