@@ -21,6 +21,7 @@ variables:
   rootNamespace: 'RebrickableSharp.Client'
   pathToLibDir: '$(System.DefaultWorkingDirectory)\$(rootNamespace)\'
   pathToLibCsproj: '$(pathToLibDir)$(rootNamespace).csproj'
+  buildScripsPath: "$(System.DefaultWorkingDirectory)/Build"
   directoryBuildPropsPath: "$(System.DefaultWorkingDirectory)/Directory.Build.props"
 
 steps:
