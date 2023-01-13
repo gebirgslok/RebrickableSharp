@@ -193,14 +193,6 @@ internal sealed class RebrickableClient : IRebrickableClient
         query["page"] = page.ToString();
         query["page_size"] = pageSize.ToString();
         query["inc_part_details"] = true.ToQueryParam();
-        //query.AddIfNotNull("bricklink_id", bricklinkId);
-        //query.AddIfNotNull("part_num", partNumber);
-        //query.AddIfNotNull("part_nums", partNumbers, x => string.Join(",", x!));
-        //query.AddIfNotNull("part_cat_id", categoryId);
-        //query.AddIfNotNull("brickowl_id", brickOwlId);
-        //query.AddIfNotNull("lego_id", legoId);
-        //query.AddIfNotNull("ldraw_id", lDrawId);
-        //query.AddIfNotNull("search", searchTerm);
         builder.Query = query.ToString();
         var url = builder.ToString();
 
@@ -219,7 +211,8 @@ internal sealed class RebrickableClient : IRebrickableClient
         builder.Query = query.ToString();
         var url = builder.ToString();
 
-        var getSetPartsResponse = await ExecuteRequest<PagedResponse<SetPart>>(url, HttpMethod.Get, cancellationToken);
+        var getSetPartsResponse = await ExecuteRequest<PagedResponse<SetPart>>(url, 
+            HttpMethod.Get, cancellationToken);
         return getSetPartsResponse;
     }
 

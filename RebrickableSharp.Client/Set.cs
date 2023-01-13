@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RebrickableSharp.Client;
 public class Set
 {
-    [JsonPropertyName("set_num")]
-    public string SetNum { get; set; }
+    [JsonPropertyName("set_num")] 
+    public string SetNum { get; set; } = null!;
 
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;

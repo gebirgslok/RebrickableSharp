@@ -13,6 +13,13 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 
 ## Changelog
 
+### 0.2.0
+- New method on *IRebrickableClient*: **GetMinifigsAsync**. Returns a list of Minifigs.
+- New method on *IRebrickableClient*: **GetSetsAsync**. Returns a list of Sets.
+- New method on *IRebrickableClient*: **GetSetPartsAsync**. Returns a list of all inventory parts in the specified Set.
+
+Thanks to [stephanstapel](https://github.com/stephanstapel) for contributing the **GetSetsAsync** and **GetSetPartsAsync** methods.
+
 ### 0.1.0
 - Authentication handling
 - HTTP request / response handling

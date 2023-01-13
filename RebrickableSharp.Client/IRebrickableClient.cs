@@ -52,7 +52,6 @@ public interface IRebrickableClient : IDisposable
     Task<Element> GetElementAsync(string elementId, 
         CancellationToken cancellationToken = default);
 
-
     Task<PagedResponse<SetPart>> GetSetPartsAsync(string id,
         int page = 1, int pageSize = 100,
         CancellationToken cancellationToken = default);
@@ -62,11 +61,6 @@ public interface IRebrickableClient : IDisposable
         int page = 1, int pageSize = 100,
         CancellationToken cancellationToken = default);
 
-    
-
-
-
     Task<PagedResponse<Minifig>> GetMinifigsAsync(int page = 1, int pageSize = 100,
         CancellationToken cancellationToken = default);
-
 }
