@@ -21,6 +21,7 @@ variables:
   rootNamespace: 'RebrickableSharp.Client'
   pathToLibDir: '$(System.DefaultWorkingDirectory)\$(rootNamespace)\'
   pathToLibCsproj: '$(pathToLibDir)$(rootNamespace).csproj'
+  directoryBuildPropsPath: "$(System.DefaultWorkingDirectory)/Directory.Build.props"
 
 steps:
   - task: NuGetToolInstaller@1
@@ -35,14 +36,14 @@ steps:
   - task: PowerShell@2
     displayName: Update CSPROJ Files
     inputs:
-      filePath: '$(System.DefaultWorkingDirectory)\Build\update-csproj-versions.ps1'
-      arguments: '-SrcDirectory $(System.DefaultWorkingDirectory) -BuildId $(Build.BuildId) -InformationalVersionSuffix "$(semVerDate)"'
+      filePath: "$(buildScripsPath)/patch-build-props.ps1"
+      arguments: '-DirectoryBuildPropsPath $(directoryBuildPropsPath) -BuildId $(Build.BuildId) -InformationalVersionSuffix "$(semVerDate)"'
       
   - task: PowerShell@2
     displayName: Update Build Number From Version
     inputs:
-      filePath: '$(System.DefaultWorkingDirectory)\Build\update-build-number-from-version.ps1'
-      arguments: '-PathToCsprojFile $(pathToLibCsproj)'
+      filePath: "$(buildScripsPath)/update-build-number-from-version.ps1"
+      arguments: "-PathToCsprojFile $(directoryBuildPropsPath)"
       
   - task: DotNetCoreCLI@2
     displayName: Build Solution And Create NuGet Package
