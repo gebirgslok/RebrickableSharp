@@ -1,19 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RebrickableSharp.Client", "RebrickableSharp.Client\RebrickableSharp.Client.csproj", "{710F934B-D4D1-4F11-99B4-938F8059BD1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RebrickableSharp.Client", "RebrickableSharp.Client\RebrickableSharp.Client.csproj", "{710F934B-D4D1-4F11-99B4-938F8059BD1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RebrickableSharp.Demos", "RebrickableSharp.Demos\RebrickableSharp.Demos.csproj", "{5E270C47-4D83-4E84-B8A6-C9FF406F81AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RebrickableSharp.Demos", "RebrickableSharp.Demos\RebrickableSharp.Demos.csproj", "{5E270C47-4D83-4E84-B8A6-C9FF406F81AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{39995158-CA4B-4F22-921F-4C5011C03E79}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{710F934B-D4D1-4F11-99B4-938F8059BD1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +27,11 @@ Global
 		{5E270C47-4D83-4E84-B8A6-C9FF406F81AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E270C47-4D83-4E84-B8A6-C9FF406F81AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E270C47-4D83-4E84-B8A6-C9FF406F81AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30D3D178-8647-445E-A3DF-F6DB35AC9370}
 	EndGlobalSection
 EndGlobal

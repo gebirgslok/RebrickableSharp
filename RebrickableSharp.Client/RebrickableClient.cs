@@ -185,6 +185,29 @@ internal sealed class RebrickableClient : IRebrickableClient
         return element;
     }
 
+    public async Task<PagedResponse<Minifig>> GetMinifigsAsync(int page = 1, int pageSize = 100, 
+        CancellationToken cancellationToken = default)
+    {
+        var builder = new UriBuilder(new Uri(_baseUri, "lego/minifigs"));
+        var query = HttpUtility.ParseQueryString(builder.Query);
+        query["page"] = page.ToString();
+        query["page_size"] = pageSize.ToString();
+        query["inc_part_details"] = true.ToQueryParam();
+        //query.AddIfNotNull("bricklink_id", bricklinkId);
+        //query.AddIfNotNull("part_num", partNumber);
+        //query.AddIfNotNull("part_nums", partNumbers, x => string.Join(",", x!));
+        //query.AddIfNotNull("part_cat_id", categoryId);
+        //query.AddIfNotNull("brickowl_id", brickOwlId);
+        //query.AddIfNotNull("lego_id", legoId);
+        //query.AddIfNotNull("ldraw_id", lDrawId);
+        //query.AddIfNotNull("search", searchTerm);
+        builder.Query = query.ToString();
+        var url = builder.ToString();
+
+        var getMinifigsResponse = await ExecuteRequest<PagedResponse<Minifig>>(url, HttpMethod.Get, cancellationToken);
+        return getMinifigsResponse;
+    }
+
     public void Dispose()
     {
         Dispose(true);

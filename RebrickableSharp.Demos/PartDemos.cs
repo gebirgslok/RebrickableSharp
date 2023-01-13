@@ -50,6 +50,17 @@ internal static class PartDemos
         Console.WriteLine();
     }
 
+    // https://github.com/gebirgslok/RebrickableSharp/issues/1
+    public static async Task GetPartsTestGithubIssue1()
+    {
+        using var client = RebrickableClientFactory.Build();
+
+        var part = await client.GetPartsAsync(page: 1, pageSize: 10, includeDetails: true, bricklinkId: "3001");
+
+        PrintHelper.PrintAsJson(part!);
+        Console.WriteLine();
+    }
+
     public static async Task FindPartByBrickLinkIdDemo()
     {
         using var client = RebrickableClientFactory.Build();

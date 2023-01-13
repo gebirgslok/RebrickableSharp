@@ -27,23 +27,15 @@ using RebrickableSharp.Client;
 
 namespace RebrickableSharp.Demos;
 
-internal static class Program
+internal static class MinifigDemos
 {
-    static async Task<int> Main()
+    public static async Task GetMinifigsDemo()
     {
-        
-        //RebrickableClientConfiguration.Instance.ApiKey = "<YOUR API KEY>";
-        RebrickableClientConfiguration.Instance.ApiKey = "7187075a2ccf8408d82f6a0a6048e194";
-        using var httpClient = new HttpClient();
-        //await PartDemos.GetPartsDemo();
-        await PartDemos.GetPartsTestGithubIssue1();
-        //await PartDemos.FindPartByBrickLinkIdDemo();
-        //await PartDemos.GetPartColorDetailsDemo();
-        //await ColorDemos.GetColorsDemo();
-        //await ColorDemos.GetColorDemo();
-        //await ElementDemos.GetElementDemo();
-        //await MinifigDemos.GetMinifigsDemo();
-        Console.ReadKey();
-        return 0;
+        using var client = RebrickableClientFactory.Build();
+
+        var pagedResponse = await client.GetMinifigsAsync();
+
+        PrintHelper.PrintAsJson(pagedResponse);
+        Console.WriteLine();
     }
 }

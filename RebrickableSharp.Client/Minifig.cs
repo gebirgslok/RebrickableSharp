@@ -23,27 +23,27 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using RebrickableSharp.Client;
+using System.Text.Json.Serialization;
 
-namespace RebrickableSharp.Demos;
+namespace RebrickableSharp.Client;
 
-internal static class Program
+public class Minifig
 {
-    static async Task<int> Main()
-    {
-        
-        //RebrickableClientConfiguration.Instance.ApiKey = "<YOUR API KEY>";
-        RebrickableClientConfiguration.Instance.ApiKey = "7187075a2ccf8408d82f6a0a6048e194";
-        using var httpClient = new HttpClient();
-        //await PartDemos.GetPartsDemo();
-        await PartDemos.GetPartsTestGithubIssue1();
-        //await PartDemos.FindPartByBrickLinkIdDemo();
-        //await PartDemos.GetPartColorDetailsDemo();
-        //await ColorDemos.GetColorsDemo();
-        //await ColorDemos.GetColorDemo();
-        //await ElementDemos.GetElementDemo();
-        //await MinifigDemos.GetMinifigsDemo();
-        Console.ReadKey();
-        return 0;
-    }
+    [JsonPropertyName("set_num")]
+    public string Number { get; set; } = null!;
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = null!;
+
+    [JsonPropertyName("num_parts")]
+    public int NumOfParts { get; set; }
+
+    [JsonPropertyName("set_img_url")]
+    public string? ImageUrl { get; set; }
+
+    [JsonPropertyName("set_url")]
+    public string? Url { get; set; }
+
+    [JsonPropertyName("last_modified_dt")]
+    public DateTime LastModified { get; set; }
 }
