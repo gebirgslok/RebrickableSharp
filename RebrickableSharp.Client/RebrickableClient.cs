@@ -23,6 +23,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Text.Json;
 using System.Web;
 using RebrickableSharp.Client.Extensions;
@@ -108,13 +109,13 @@ internal sealed class RebrickableClient : IRebrickableClient
         bool includeDetails = false,
         CancellationToken cancellationToken = default)
     {
-        var builder = new UriBuilder(new Uri(_baseUri, "lego/colors"));
-        var query = HttpUtility.ParseQueryString(builder.Query);
+        var uriBuilder = new UriBuilder(new Uri(_baseUri, "lego/colors"));
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
         query["page"] = page.ToString();
         query["page_size"] = pageSize.ToString();
         query["inc_color_details"] = includeDetails.ToQueryParam();
-
-        var url = builder.ToString();
+        uriBuilder.Query = query.ToString();
+        var url = uriBuilder.ToString();
 
         var getColorsResponse = await ExecuteRequest<PagedResponse<Color>>(url, HttpMethod.Get, cancellationToken);
         return getColorsResponse;
