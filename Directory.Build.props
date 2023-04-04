@@ -2,10 +2,10 @@
   <PropertyGroup>
     <LangVersion>10.0</LangVersion>
     <!-- version numbers will be updated by build -->
-    <Version>0.2.0.0</Version>
-    <FileVersion>0.2.0.0</FileVersion>
-    <InformationalVersion>0.2.0.0</InformationalVersion>
-    <PackageVersion>0.2.0</PackageVersion>
+    <Version>0.2.1.0</Version>
+    <FileVersion>0.2.1.0</FileVersion>
+    <InformationalVersion>0.2.1.0</InformationalVersion>
+    <PackageVersion>0.2.1</PackageVersion>
     <Authors>Jens Eisenbach</Authors>
     <Product>RebrickableSharp</Product>
     <Copyright>Copyright © Jens Eisenbach 2022</Copyright>
