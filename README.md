@@ -13,6 +13,9 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 
 ## Changelog
 
+### 0.2.1
+- Fixed bug in **GetColorsAsync**: query params are not applied, thanks to [stephanstapel](https://github.com/stephanstapel)
+
 ### 0.2.0
 - New method on *IRebrickableClient*: **GetMinifigsAsync**. Returns a list of Minifigs.
 - New method on *IRebrickableClient*: **GetSetsAsync**. Returns a list of Sets.
