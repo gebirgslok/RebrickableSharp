@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
     <!-- version numbers will be updated by build -->
-    <PackageVersion>0.2.0</PackageVersion>
     <Description>Strongly-typed, easy-to-use API client for Rebrickable.</Description>
     <Summary>Strongly-typed, easy-to-use API client for Rebrickable.</Summary>
     <NeutralLanguage>en-US</NeutralLanguage>
