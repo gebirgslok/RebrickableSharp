@@ -39,9 +39,9 @@
     <DefineConstants>HAVE_JSON_DEFAULT_IGNORE_CONDITION;HAVE_HTTP_CONTENT_READ_CANCELLATION_TOKEN</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NullGuard.Fody" Version="3.1.0" PrivateAssets="all" />
+    <PackageReference Include="NullGuard.Fody" Version="3.1.1" PrivateAssets="all" />
   </ItemGroup>
 </Project>
