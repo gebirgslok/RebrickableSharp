@@ -1,5 +1,5 @@
 ﻿#region License
-// Copyright (c) 2022 Jens Eisenbach
+// Copyright (c) 2020 Jens Eisenbach
 //
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
@@ -23,22 +23,17 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace RebrickableSharp.Client;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
 
-public static class RebrickableClientFactory
+namespace RebrickableSharp.Client
 {
-    private static IRebrickableClient Build(HttpClient httpClient, bool disposeHttpClient, IRebrickableRequestHandler? requestHandler = null)
+    public interface IRebrickableRequestHandler
     {
-        return new RebrickableClient(httpClient, disposeHttpClient, requestHandler);
-    }
-
-    public static IRebrickableClient Build(HttpClient httpClient, IRebrickableRequestHandler? requestHandler = null)
-    {
-        return Build(httpClient, false, requestHandler);
-    }
-
-    public static IRebrickableClient Build(IRebrickableRequestHandler? requestHandler = null)
-    {
-        return Build(new HttpClient(), true, requestHandler);
+        Task OnRequestAsync(RebrickableApiResourceType resourceType, HttpVerb verb, string? apiKey, CancellationToken ct);
     }
 }

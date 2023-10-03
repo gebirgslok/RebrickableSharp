@@ -22,23 +22,17 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RebrickableSharp.Client;
 
-public static class RebrickableClientFactory
+public enum RebrickableApiResourceType
 {
-    private static IRebrickableClient Build(HttpClient httpClient, bool disposeHttpClient, IRebrickableRequestHandler? requestHandler = null)
-    {
-        return new RebrickableClient(httpClient, disposeHttpClient, requestHandler);
-    }
-
-    public static IRebrickableClient Build(HttpClient httpClient, IRebrickableRequestHandler? requestHandler = null)
-    {
-        return Build(httpClient, false, requestHandler);
-    }
-
-    public static IRebrickableClient Build(IRebrickableRequestHandler? requestHandler = null)
-    {
-        return Build(new HttpClient(), true, requestHandler);
-    }
+    Part,
+    Set,
+    Color,
+    Element,
+    Minifigure
 }
