@@ -13,6 +13,9 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 
 ## Changelog
 
+### 0.3.0
+- Added the option to inject a custom ``IRebrickableRequestHandler`` to handle the Rebrickable API rate limiting in your own way, thanks to [stephanstapel](https://github.com/stephanstapel)
+
 ### 0.2.1
 - Fixed bug in **GetColorsAsync**: query params are not applied, thanks to [stephanstapel](https://github.com/stephanstapel)
 
