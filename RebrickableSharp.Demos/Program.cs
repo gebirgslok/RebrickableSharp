@@ -36,7 +36,7 @@ internal static class Program
         using var httpClient = new HttpClient();
         //await PartDemos.GetPartsDemo();
         await PartDemos.GetPartsTestGithubIssue1();
-        //await PartDemos.FindPartByBrickLinkIdDemo();
+        // await PartDemos.FindPartByBrickLinkIdDemo();
         //await PartDemos.GetPartColorDetailsDemo();
         //await ColorDemos.GetColorsDemo();
         //await ColorDemos.GetColorDemo();

@@ -61,11 +61,18 @@ internal static class PartDemos
         Console.WriteLine();
     }
 
-    public static async Task FindPartByBrickLinkIdDemo()
+    public static async Task FindPartByBrickLinkIdDemo(string? brickLinkNo = null, string? apiKey = null)
     {
         using var client = RebrickableClientFactory.Build();
 
-        var part = await client.FindPartByBricklinkIdAsync("3005", true);
+        var credentials = apiKey == null
+            ? null
+            : new RebrickableCredentials
+            {
+                ApiKey = apiKey
+            };
+
+        var part = await client.FindPartByBricklinkIdAsync(brickLinkNo ?? "3005", true, credentials: credentials);
 
         PrintHelper.PrintAsJson(part!);
         Console.WriteLine();

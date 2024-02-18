@@ -13,6 +13,10 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 
 ## Changelog
 
+### 0.4.0
+- Added optional parameter RebrickableCredentials? credentials = null to every method on IRebrickableClient that requires authentication. This will take precedence over the global credentials (RebrickableClientConfiguration.Instance) and is useful for server scenarios (e.g. ASP.NET Core) where you need to do a request in the name of the logged in user
+- Throw exception if no API key is provided (neither global nor local)
+
 ### 0.3.0
 - Added the option to inject a custom ``IRebrickableRequestHandler`` to handle the Rebrickable API rate limiting in your own way, thanks to [stephanstapel](https://github.com/stephanstapel)
 

@@ -29,9 +29,11 @@ public interface IRebrickableClient : IDisposable
 {
     Task<PagedResponse<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
         bool includeDetails = false,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
-    Task<Color> GetColorAsync(int colorId, bool includeDetails = false, 
+    Task<Color> GetColorAsync(int colorId, bool includeDetails = false,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
     Task<PagedResponse<Part>> GetPartsAsync(int page = 1, int pageSize = 100, 
@@ -40,27 +42,36 @@ public interface IRebrickableClient : IDisposable
         int? categoryId = null, string? brickOwlId = null,
         string? legoId = null, string? lDrawId = null,
         string? searchTerm = null,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
     Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
         bool includeDetails = false,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
-    Task<PartColorDetails> GetPartColorDetailsAsync(string partNumber, int colorId,
+    Task<PartColorDetails> GetPartColorDetailsAsync(string partNumber, 
+        int colorId,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
-    Task<Element> GetElementAsync(string elementId, 
+    Task<Element> GetElementAsync(string elementId,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
     Task<PagedResponse<SetPart>> GetSetPartsAsync(string id,
-        int page = 1, int pageSize = 100,
+        int page = 1, 
+        int pageSize = 100,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
     Task<PagedResponse<Set>> GetSetsAsync(int minYear, int maxYear,
-        int minParts = 0, int maxParts = 100000,
+        int minParts = 0, int maxParts = 100000, 
         int page = 1, int pageSize = 100,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 
     Task<PagedResponse<Minifig>> GetMinifigsAsync(int page = 1, int pageSize = 100,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default);
 }

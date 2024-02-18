@@ -1,4 +1,5 @@
-﻿#region License
+#region License
+
 // Copyright (c) 2022 Jens Eisenbach
 //
 // Permission is hereby granted, free of charge, to any person
@@ -21,30 +22,12 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-#endregion
 
-using System.Text;
+#endregion
 
 namespace RebrickableSharp.Client;
 
-public class RebrickableMissingCredentialsException : Exception
+public class RebrickableCredentials
 {
-    public RebrickableMissingCredentialsException(IReadOnlyList<string> missingParams) : base(BuildMessage(missingParams))
-    {
-    }
-
-    private static string BuildMessage(IReadOnlyList<string> missingParams)
-    {
-        var builder = new StringBuilder();
-        builder.AppendLine("Missing credential parameter(s):");
-
-        for (var i = 0; i < missingParams.Count; i++)
-        {
-            var missingParam = missingParams[i];
-            var isLast = i == missingParams.Count - 1;
-            builder.AppendLine($"Parameter = {missingParam}{(isLast ? "." : ", ")}");
-        }
-
-        return builder.ToString();
-    }
+    public string? ApiKey { get; set; }
 }

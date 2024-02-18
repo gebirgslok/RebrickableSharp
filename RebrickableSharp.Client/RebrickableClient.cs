@@ -23,7 +23,6 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Text.Json;
 using System.Web;
 using RebrickableSharp.Client.Extensions;
@@ -51,20 +50,49 @@ internal sealed class RebrickableClient : IRebrickableClient
         Dispose(false);
     }
 
-    private static string AppendApiKey(string url)
+    private string EnsureApiKey(RebrickableCredentials? credentials)
     {
-        RebrickableClientConfiguration.Instance.ValidateThrowException();
+        var apiKey = credentials != null ? credentials.ApiKey : RebrickableClientConfiguration.Instance.ApiKey;
+        
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            throw new RebrickableMissingCredentialsException(new[]
+            {
+                nameof(RebrickableCredentials.ApiKey)
+            });
+        }
 
+        return apiKey!;
+    }
+    
+    private async Task MeasureRequestAsync(RebrickableApiResourceType resourceType, 
+        HttpVerb verb,
+        string apiKey,
+        CancellationToken cancellationToken = default)
+    {
+        if (_requestHandler != null)
+        {
+            await _requestHandler.OnRequestAsync(resourceType, verb, apiKey, cancellationToken);
+        }
+    }
+    
+    private static string AppendApiKey(string url, string apiKey)
+    {
         var uriBuilder = new UriBuilder(url);
         var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-        query["key"] = RebrickableClientConfiguration.Instance.ApiKey;
+        query["key"] = apiKey;
         uriBuilder.Query = query.ToString();
         return uriBuilder.ToString();
     }
 
-    private async Task<TResponse> ExecuteRequest<TResponse>(string url, HttpMethod httpMethod, CancellationToken cancellationToken = default)
+    private async Task<TResponse> ExecuteRequest<TResponse>(string url, 
+        HttpMethod httpMethod,
+        RebrickableCredentials? credentials,
+        RebrickableApiResourceType resourceType,
+        CancellationToken cancellationToken = default)
     {
-        var urlWithKey = AppendApiKey(url);
+        var apiKey = EnsureApiKey(credentials);
+        var urlWithKey = AppendApiKey(url, apiKey);
 
         using var message = new HttpRequestMessage(httpMethod, urlWithKey);
 
@@ -85,6 +113,11 @@ internal sealed class RebrickableClient : IRebrickableClient
             //TODO 
             throw new Exception("");
         }
+        
+        await MeasureRequestAsync(resourceType, 
+            HttpVerb.Get, 
+            apiKey, 
+            cancellationToken);
 
         return responseData;
     }
@@ -109,6 +142,7 @@ internal sealed class RebrickableClient : IRebrickableClient
 
     public async Task<PagedResponse<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
         bool includeDetails = false,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default)
     {
         var uriBuilder = new UriBuilder(new Uri(_baseUri, "lego/colors"));
@@ -118,22 +152,31 @@ internal sealed class RebrickableClient : IRebrickableClient
         query["inc_color_details"] = includeDetails.ToQueryParam();
         uriBuilder.Query = query.ToString();
         var url = uriBuilder.ToString();
-
-        await MeasureRequestAsync(RebrickableApiResourceType.Color, HttpVerb.Get, cancellationToken);
-        var getColorsResponse = await ExecuteRequest<PagedResponse<Color>>(url, HttpMethod.Get, cancellationToken);
+        
+        var getColorsResponse = await ExecuteRequest<PagedResponse<Color>>(url, 
+            HttpMethod.Get, 
+            credentials,
+            RebrickableApiResourceType.Color,
+            cancellationToken);
+        
         return getColorsResponse;
     }
 
-    public async Task<Color> GetColorAsync(int colorId, bool includeDetails = false, 
+    public async Task<Color> GetColorAsync(int colorId, bool includeDetails = false,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default)
     {
         var builder = new UriBuilder(new Uri(_baseUri, $"lego/colors/{colorId}"));
         var query = HttpUtility.ParseQueryString(builder.Query);
         query["inc_color_details"] = includeDetails.ToQueryParam();
         var url = builder.ToString();
-
-        await MeasureRequestAsync(RebrickableApiResourceType.Color, HttpVerb.Get, cancellationToken);
-        var color = await ExecuteRequest<Color>(url, HttpMethod.Get, cancellationToken);
+        
+        var color = await ExecuteRequest<Color>(url, 
+            HttpMethod.Get, 
+            credentials, 
+            RebrickableApiResourceType.Color, 
+            cancellationToken);
+        
         return color;
     }
 
@@ -143,6 +186,7 @@ internal sealed class RebrickableClient : IRebrickableClient
         int? categoryId = null, string? brickOwlId = null,
         string? legoId = null, string? lDrawId = null,
         string? searchTerm = null, 
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default)
     {
         var builder = new UriBuilder(new Uri(_baseUri, "lego/parts"));
@@ -160,41 +204,60 @@ internal sealed class RebrickableClient : IRebrickableClient
         query.AddIfNotNull("search", searchTerm);
         builder.Query = query.ToString();
         var url = builder.ToString();
-
-        await MeasureRequestAsync(RebrickableApiResourceType.Part, HttpVerb.Get, cancellationToken);
-        var getPartsResponse = await ExecuteRequest<PagedResponse<Part>>(url, HttpMethod.Get, cancellationToken);
+        
+        var getPartsResponse = await ExecuteRequest<PagedResponse<Part>>(url, HttpMethod.Get,
+            credentials, RebrickableApiResourceType.Part, cancellationToken);
+        
         return getPartsResponse;
     }
 
     public async Task<Part?> FindPartByBricklinkIdAsync(string bricklinkId,
         bool includeDetails = false,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default)
     {
-        await MeasureRequestAsync(RebrickableApiResourceType.Part, HttpVerb.Get, cancellationToken);
-        var response = await GetPartsAsync(pageSize: 1, includeDetails:
-            includeDetails, bricklinkId: bricklinkId, cancellationToken: cancellationToken);
+        var response = await GetPartsAsync(pageSize: 1, 
+            includeDetails:
+            includeDetails, 
+            bricklinkId: bricklinkId, 
+            credentials: credentials, 
+            cancellationToken: cancellationToken);
 
         return response.Results.FirstOrDefault();
     }
 
     public async Task<PartColorDetails> GetPartColorDetailsAsync(string partNumber, int colorId, 
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default)
     {
         var url = new Uri(_baseUri, $"lego/parts/{partNumber}/colors/{colorId}").ToString();
-        await MeasureRequestAsync(RebrickableApiResourceType.Part, HttpVerb.Get, cancellationToken);
-        var partColorDetails = await ExecuteRequest<PartColorDetails>(url, HttpMethod.Get, cancellationToken);
+        
+        var partColorDetails = await ExecuteRequest<PartColorDetails>(url, 
+            HttpMethod.Get,
+            credentials,
+            RebrickableApiResourceType.Part,
+            cancellationToken);
+        
         return partColorDetails;
     }
 
-    public async Task<Element> GetElementAsync(string elementId, CancellationToken cancellationToken = default)
+    public async Task<Element> GetElementAsync(string elementId, 
+        RebrickableCredentials? credentials = null,
+        CancellationToken cancellationToken = default)
     {
         var url = new Uri(_baseUri, $"lego/elements/{elementId}").ToString();
-        await MeasureRequestAsync(RebrickableApiResourceType.Element, HttpVerb.Get, cancellationToken);
-        var element = await ExecuteRequest<Element>(url, HttpMethod.Get, cancellationToken);
+        
+        var element = await ExecuteRequest<Element>(url, 
+            HttpMethod.Get,
+            credentials,
+            RebrickableApiResourceType.Element,
+            cancellationToken);
+        
         return element;
     }
 
-    public async Task<PagedResponse<Minifig>> GetMinifigsAsync(int page = 1, int pageSize = 100, 
+    public async Task<PagedResponse<Minifig>> GetMinifigsAsync(int page = 1, int pageSize = 100,
+        RebrickableCredentials? credentials = null,
         CancellationToken cancellationToken = default)
     {
         var builder = new UriBuilder(new Uri(_baseUri, "lego/minifigs"));
@@ -204,14 +267,19 @@ internal sealed class RebrickableClient : IRebrickableClient
         query["inc_part_details"] = true.ToQueryParam();
         builder.Query = query.ToString();
         var url = builder.ToString();
-
-        await MeasureRequestAsync(RebrickableApiResourceType.Minifigure, HttpVerb.Get, cancellationToken);
-        var getMinifigsResponse = await ExecuteRequest<PagedResponse<Minifig>>(url, HttpMethod.Get, cancellationToken);
+        
+        var getMinifigsResponse = await ExecuteRequest<PagedResponse<Minifig>>(url, 
+            HttpMethod.Get,
+            credentials,
+            RebrickableApiResourceType.Minifigure,
+            cancellationToken);
+        
         return getMinifigsResponse;
     }
 
     public async Task<PagedResponse<SetPart>> GetSetPartsAsync(string id,
     int page = 1, int pageSize = 100,
+    RebrickableCredentials? credentials = null,
     CancellationToken cancellationToken = default)
     {
         var builder = new UriBuilder(new Uri(_baseUri, $"lego/sets/{id}/parts"));
@@ -220,16 +288,20 @@ internal sealed class RebrickableClient : IRebrickableClient
         query["page_size"] = pageSize.ToString();
         builder.Query = query.ToString();
         var url = builder.ToString();
-
-        await MeasureRequestAsync(RebrickableApiResourceType.Set, HttpVerb.Get, cancellationToken);
+        
         var getSetPartsResponse = await ExecuteRequest<PagedResponse<SetPart>>(url, 
-            HttpMethod.Get, cancellationToken);
+            HttpMethod.Get,
+            credentials,
+            RebrickableApiResourceType.Set,
+            cancellationToken);
+        
         return getSetPartsResponse;
     }
 
     public async Task<PagedResponse<Set>> GetSetsAsync(int minYear, int maxYear,
          int minParts = 0, int maxParts = 100000,
          int page = 1, int pageSize = 100,
+         RebrickableCredentials? credentials = null,
          CancellationToken cancellationToken = default)
     {
         var builder = new UriBuilder(new Uri(_baseUri, "lego/sets"));
@@ -242,9 +314,13 @@ internal sealed class RebrickableClient : IRebrickableClient
         query["max_parts"] = maxParts.ToString();
         builder.Query = query.ToString();
         var url = builder.ToString();
-
-        await MeasureRequestAsync(RebrickableApiResourceType.Set, HttpVerb.Get, cancellationToken);
-        var getSetsResponse = await ExecuteRequest<PagedResponse<Set>>(url, HttpMethod.Get, cancellationToken);
+        
+        var getSetsResponse = await ExecuteRequest<PagedResponse<Set>>(url, 
+            HttpMethod.Get,
+            credentials,
+            RebrickableApiResourceType.Set,
+            cancellationToken);
+        
         return getSetsResponse;
     }
 
@@ -253,13 +329,4 @@ internal sealed class RebrickableClient : IRebrickableClient
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-
-
-    private async Task MeasureRequestAsync(RebrickableApiResourceType resourceType, HttpVerb verb, CancellationToken cancellationToken = default)
-    {
-        if (_requestHandler != null)
-        {
-            await _requestHandler.OnRequestAsync(resourceType, verb, RebrickableClientConfiguration.Instance.ApiKey, cancellationToken);
-        }
-    } // !MeasureRequestAsync()
 }

@@ -25,19 +25,12 @@
 
 namespace RebrickableSharp.Client;
 
-public class RebrickableClientConfiguration
+public class RebrickableClientConfiguration : RebrickableCredentials
 {
-    public string? ApiKey { get; set; }
-
     private static RebrickableClientConfiguration? _instance;
     public static RebrickableClientConfiguration Instance => _instance ??= new RebrickableClientConfiguration(); 
 
     private RebrickableClientConfiguration()
     {
-    }
-
-    internal void ValidateThrowException()
-    {
-
     }
 }
