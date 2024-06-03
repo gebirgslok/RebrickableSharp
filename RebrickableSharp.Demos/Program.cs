@@ -24,16 +24,28 @@
 #endregion
 
 using RebrickableSharp.Client;
+using RebrickableSharp.Client.Csv;
 
 namespace RebrickableSharp.Demos;
 
 internal static class Program
 {
-    static async Task<int> Main()
+    static async Task<int> Main(string[] args)
     {
-        
-        RebrickableClientConfiguration.Instance.ApiKey = "<YOUR API KEY>";
-        using var httpClient = new HttpClient();
+        var jsonDemo = args.Length == 0 || args[0]?.Equals("csv", StringComparison.InvariantCultureIgnoreCase) != true;
+        if (jsonDemo)
+        {
+            return await JsonDemo();
+        }
+        else
+        {
+            return await CsvDemo();
+        }
+    }
+
+    static async Task<int> JsonDemo()
+    {
+        RebrickableClientConfiguration.Instance.ApiKey = Environment.GetEnvironmentVariable("REBRICKABLE_API_KEY") ?? "<YOUR API KEY>";
         //await PartDemos.GetPartsDemo();
         await PartDemos.GetPartsTestGithubIssue1();
         // await PartDemos.FindPartByBrickLinkIdDemo();
@@ -42,6 +54,15 @@ internal static class Program
         //await ColorDemos.GetColorDemo();
         //await ElementDemos.GetElementDemo();
         //await MinifigDemos.GetMinifigsDemo();
+        Console.ReadKey();
+        return 0;
+    }
+
+    static async Task<int> CsvDemo()
+    {
+        var csv = new RebrickableCsvLoader();
+        var result = await csv.DownloadAsync<Theme>();
+        PrintHelper.PrintAsJson(result);
         Console.ReadKey();
         return 0;
     }

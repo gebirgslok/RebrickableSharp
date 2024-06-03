@@ -12,33 +12,7 @@ It supports all .NET platforms compatible with *.NET standard 2.0*.
 - [BricklinkSharp](https://github.com/gebirgslok/BricklinkSharp) - Easy-to-use C# client for the bricklink (LEGO) marketplace API.
 
 ## Changelog
-
-### 0.4.0
-- Added optional parameter RebrickableCredentials? credentials = null to every method on IRebrickableClient that requires authentication. This will take precedence over the global credentials (RebrickableClientConfiguration.Instance) and is useful for server scenarios (e.g. ASP.NET Core) where you need to do a request in the name of the logged in user
-- Throw exception if no API key is provided (neither global nor local)
-
-### 0.3.0
-- Added the option to inject a custom ``IRebrickableRequestHandler`` to handle the Rebrickable API rate limiting in your own way, thanks to [stephanstapel](https://github.com/stephanstapel)
-
-### 0.2.1
-- Fixed bug in **GetColorsAsync**: query params are not applied, thanks to [stephanstapel](https://github.com/stephanstapel)
-
-### 0.2.0
-- New method on *IRebrickableClient*: **GetMinifigsAsync**. Returns a list of Minifigs.
-- New method on *IRebrickableClient*: **GetSetsAsync**. Returns a list of Sets.
-- New method on *IRebrickableClient*: **GetSetPartsAsync**. Returns a list of all inventory parts in the specified Set.
-
-Thanks to [stephanstapel](https://github.com/stephanstapel) for contributing the **GetSetsAsync** and **GetSetPartsAsync** methods.
-
-### 0.1.0
-- Authentication handling
-- HTTP request / response handling
-- New method on *IRebrickableClient*: **GetColorsAsync**. Returns a color list.
-- New method on *IRebrickableClient*: **GetColorAsync**. Returns a specific color.
-- New method on *IRebrickableClient*: **GetPartsAsync**. Returns a part list with various filter options.
-- New method on *IRebrickableClient*: **FindPartByBricklinkIdAsync**. Find a part by its BrickLink ID.
-- New method on *IRebrickableClient*: **GetPartColorDetails**. Gets details for a specific part / color combination.
-- New method on *IRebrickableClient*: **GetElementAsync**. Returns a specific element.
+- See [CHANGELOG.md](CHANGELOG.md)
 
 ## Get Started
 
@@ -47,6 +21,8 @@ Check out the [demo project](https://github.com/gebirgslok/RebrickableSharp/tree
 
 ### Prerequisites
 You need to have an account on [Rebrickable](https://www.rebrickable.com/). Then, go to *Account > Settings > API* and create a new **Key** or use an existing one.
+
+Note that the CSV helper classes do not require an API Key to be used.
 
 ### Install NuGet Package
 #### Package Manager Console
