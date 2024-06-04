@@ -1,7 +1,7 @@
 # Changelog
 
 ### 0.5.0
-- Added a new **RebrickableCsvLoader** loader class to allow downloading and parsing CSV bulk files directly from the Rebrickable CDN, see the demo project for usage.
+- Added a new separate project and Nuget package for a **RebrickableCsvLoader** loader class which allows downloading and parsing CSV bulk files directly from the Rebrickable CDN, see the demo project for usage.
 - New method on *IRebrickableClient*: **GetThemesAsync**. Returns all themes list.
 - Moved the changelog to its own CHANGELOG.md file.
 

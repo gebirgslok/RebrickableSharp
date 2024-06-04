@@ -11,19 +11,19 @@ namespace RebrickableSharp.Client.Csv;
 /// </para>
 /// <para>See <see cref="https://rebrickable.com/downloads/"/></para>
 /// </summary>
-public class RebrickableCsvLoader : IDisposable
+public class RebrickableCsvLoader : IRebrickableCsvLoader
 {
+    public const string DefaultBaseUri = "https://cdn.rebrickable.com/media/downloads/";
+
     private readonly HttpClient _httpClient;
     private bool _disposed;
     private bool _disposeHttpClient;
     private readonly Uri _downloadBaseUri;
 
-    private const string DefaultBaseUri = "https://cdn.rebrickable.com/media/downloads/";
-
-    public RebrickableCsvLoader(HttpClient? httpClient = null, string baseUriString = DefaultBaseUri)
+    public RebrickableCsvLoader(HttpClient? httpClient = null, bool disposeHttpClient = true, string baseUriString = DefaultBaseUri)
     {
         _httpClient = httpClient ?? new HttpClient();
-        _disposeHttpClient = httpClient == null;
+        _disposeHttpClient = disposeHttpClient;
         _downloadBaseUri = new Uri(baseUriString);
     }
 
@@ -33,33 +33,78 @@ public class RebrickableCsvLoader : IDisposable
     /// <typeparam name="T">A Rebrickable Csv compatible type</typeparam>
     /// <param name="csvFileName">The StreamReader to read Csv records from</param>
     /// <returns>an array of T</returns>
-    public async Task<T[]> ParseStreamAsync<T>(StreamReader reader) where T : class, ICsvCompatible
+    private async Task<T[]> ParseStreamAsync<T>(StreamReader reader) where T : class
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            Delimiter = ",",            
+            Delimiter = ",",
             TrimOptions = TrimOptions.Trim,
             HeaderValidated = null,
             MissingFieldFound = null,
         };
+
         using var csv = new CsvReader(reader, config);
+        csv.Context.RegisterClassMap(GetClassMap<T>());
         var records = csv.GetRecordsAsync<T>();
         return await records.ToArrayAsync();
     }
 
-    /// <summary>
-    /// Parses records from a Csv file to an array of <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T">A Rebrickable Csv compatible type</typeparam>
-    /// <param name="csvFileName">The Csv file to parse</param>
-    /// <returns>an array of <typeparamref name="T"/></returns>
-    public async Task<T[]> ParseAsync<T>(string csvFileName) where T : class, ICsvCompatible
+    private ClassMap GetClassMap<T>()
+    {
+        if (typeof(T) == typeof(Set))
+        {
+            var alternateNames = new Dictionary<string, string> {
+                { nameof(Set.SetImageURL), "img_url" }
+            };
+            return new JsonCsvClassMap<Set>(alternateNames);
+        }
+        else if (typeof(T) == typeof(Theme))
+        {
+            return new JsonCsvClassMap<Theme>();
+        }
+        else
+        {
+            throw new NotImplementedException($"{nameof(GetClassMap)} for {typeof(T).FullName} is not implemented");
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task<T[]> ParseAsync<T>(string csvFileName) where T : class
     {
         using var reader = new StreamReader(csvFileName);
         return await ParseStreamAsync<T>(reader);
     }
 
-    private async Task<string> DecompressFileAsync(string gzipFileName)
+    /// <inheritdoc />
+    public async Task<string?> DownloadFileAsync<T>(bool decompress = true) where T : class
+    {
+        return await DownloadFileAsync(GetDownloadUri<T>(), decompress);
+    }
+
+    /// <inheritdoc />
+    public async Task<T[]> DownloadAsync<T>() where T : class
+    {
+        string? csvFileName = null;
+        var uri = GetDownloadUri<T>();
+        try
+        {
+            csvFileName = await DownloadFileAsync(uri);
+            if (!File.Exists(csvFileName))
+            {
+                throw new RebrickableCsvException($"Failed to download a file for {typeof(T)} from {uri}");
+            }
+            return await ParseAsync<T>(csvFileName);
+        }
+        finally
+        {
+            if (csvFileName != null)
+            {
+                File.Delete(csvFileName);
+            }
+        }
+    }
+
+    private static async Task<string> DecompressFileAsync(string gzipFileName)
     {
         var path = Path.GetTempFileName();
         using (var originalFileStream = new FileStream(gzipFileName, FileMode.Open, FileAccess.Read))
@@ -75,46 +120,7 @@ public class RebrickableCsvLoader : IDisposable
         return path;
     }
 
-    /// <summary>
-    /// Downloads a Csv static file from the rebrickable CDN.
-    /// </summary>
-    /// <typeparam name="T">the type of Csv file to download</typeparam>
-    /// <param name="decompress">whether to decompress the file after download</param>
-    /// <returns>a temp filename containg the result of the download</returns>
-    public async Task<string?> DownloadFileAsync<T>(bool decompress = true) where T : class, ICsvCompatible
-    {
-        return await DownloadFileAsync(GetDownloadUri<T>(), decompress);
-    }
-
-    /// <summary>
-    /// Donwloads and parses a Csv from file from the Rebrickable CDN into an array of <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T">A Rebrickable Csv compatible type</typeparam>
-    /// <returns>an array of <typeparamref name="T"/></returns>
-    /// <exception cref="RebrickableCsvException">if the download fails</exception>
-    public async Task<T[]> DownloadAsync<T>() where T : class, ICsvCompatible
-    {
-        string? csvFileName = null;
-        var uri = GetDownloadUri<T>();
-        try
-        {
-            csvFileName = await DownloadFileAsync(uri);
-            if (!File.Exists(csvFileName))
-            {
-                throw new RebrickableCsvException($"Failed to dowload a file for {typeof(T)} from {uri}");
-            }
-            return await ParseAsync<T>(csvFileName);
-        }
-        finally
-        {
-            if (csvFileName != null)
-            {
-                File.Delete(csvFileName);
-            }
-        }
-    }
-
-    private Uri GetDownloadUri<T>() where T : class, ICsvCompatible
+    private Uri GetDownloadUri<T>() where T : class
     {
         string resource;
         if (typeof(T) == typeof(Set))
@@ -127,15 +133,17 @@ public class RebrickableCsvLoader : IDisposable
         }
         else
         {
-            throw new NotImplementedException($"Download uri for {typeof(T)} is not implemented");
+            throw new NotImplementedException($"Download uri for {typeof(T).FullName} is not implemented");
         }
         return new Uri(_downloadBaseUri, resource + ".csv.gz");
     }
 
-    private async Task<string> DownloadFileAsync(Uri uri, bool decompress = true) {
+    private async Task<string> DownloadFileAsync(Uri uri, bool decompress = true)
+    {
         string? outputFile = null;
         string? tempFile = null;
-        try {
+        try
+        {
             using (var response = await _httpClient.GetAsync(uri))
             {
                 response.EnsureSuccessStatusCode();

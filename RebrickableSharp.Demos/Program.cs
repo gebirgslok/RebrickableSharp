@@ -48,7 +48,7 @@ internal static class Program
         RebrickableClientConfiguration.Instance.ApiKey = Environment.GetEnvironmentVariable("REBRICKABLE_API_KEY") ?? "<YOUR API KEY>";
         //await PartDemos.GetPartsDemo();
         await PartDemos.GetPartsTestGithubIssue1();
-        // await PartDemos.FindPartByBrickLinkIdDemo();
+        //await PartDemos.FindPartByBrickLinkIdDemo();
         //await PartDemos.GetPartColorDetailsDemo();
         //await ColorDemos.GetColorsDemo();
         //await ColorDemos.GetColorDemo();
@@ -60,8 +60,9 @@ internal static class Program
 
     static async Task<int> CsvDemo()
     {
-        var csv = new RebrickableCsvLoader();
-        var result = await csv.DownloadAsync<Theme>();
+        var csvLoader = RebrickableCsvLoaderFactory.Build();
+        var result = await csvLoader.DownloadAsync<Theme>();
+        //var result = await csvLoader.ParseAsync<Set>(csvSetFileName);
         PrintHelper.PrintAsJson(result);
         Console.ReadKey();
         return 0;

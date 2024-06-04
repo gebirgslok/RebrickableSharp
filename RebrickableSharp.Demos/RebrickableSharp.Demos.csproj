@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RebrickableSharp.Client.Csv\RebrickableSharp.Client.Csv.csproj" />
     <ProjectReference Include="..\RebrickableSharp.Client\RebrickableSharp.Client.csproj" />
   </ItemGroup>
 
