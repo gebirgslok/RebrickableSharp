@@ -8,10 +8,10 @@ namespace RebrickableSharp.Client.Csv;
 /// Helper class to generate a Csv ClassMap from JsonPropertyName attributes.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class JsonCsvClassMap<T> : ClassMap<T> where T : class
+internal class JsonCsvClassMap<T> : ClassMap<T> where T : class
 {
     /// <summary>
-    /// Creates a new ClassMap for the given type.
+    /// Creates a new ClassMap for the specified generic type.
     /// </summary>
     /// <param name="alternateNames">a list of alternate names for the properties of T when they do not match JsonPropertyName attributes</param>
     public JsonCsvClassMap(IDictionary<string, string>? alternateNames = null)
