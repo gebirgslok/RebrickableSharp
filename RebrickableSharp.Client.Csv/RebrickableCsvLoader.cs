@@ -33,7 +33,7 @@ public class RebrickableCsvLoader : IRebrickableCsvLoader
     /// <typeparam name="T">A Rebrickable Csv compatible type</typeparam>
     /// <param name="csvFileName">The StreamReader to read Csv records from</param>
     /// <returns>an array of T</returns>
-    private async Task<T[]> ParseStreamAsync<T>(StreamReader reader) where T : class
+    private async Task<T[]> ParseStreamAsync<T>(StreamReader reader, CancellationToken cancellationToken = default) where T : class
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -45,7 +45,7 @@ public class RebrickableCsvLoader : IRebrickableCsvLoader
 
         using var csv = new CsvReader(reader, config);
         csv.Context.RegisterClassMap(GetClassMap<T>());
-        var records = csv.GetRecordsAsync<T>();
+        var records = csv.GetRecordsAsync<T>(cancellationToken);
         return await records.ToArrayAsync();
     }
 
@@ -69,31 +69,31 @@ public class RebrickableCsvLoader : IRebrickableCsvLoader
     }
 
     /// <inheritdoc />
-    public async Task<T[]> ParseAsync<T>(string csvFileName) where T : class
+    public async Task<T[]> ParseAsync<T>(string csvFileName, CancellationToken cancellationToken = default) where T : class
     {
         using var reader = new StreamReader(csvFileName);
-        return await ParseStreamAsync<T>(reader);
+        return await ParseStreamAsync<T>(reader, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<string?> DownloadFileAsync<T>(bool decompress = true) where T : class
+    public async Task<string?> DownloadFileAsync<T>(bool decompress = true, CancellationToken cancellationToken = default) where T : class
     {
-        return await DownloadFileAsync(GetDownloadUri<T>(), decompress);
+        return await DownloadFileAsync(GetDownloadUri<T>(), decompress, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<T[]> DownloadAsync<T>() where T : class
+    public async Task<T[]> DownloadAsync<T>(CancellationToken cancellationToken = default) where T : class
     {
         string? csvFileName = null;
         var uri = GetDownloadUri<T>();
         try
         {
-            csvFileName = await DownloadFileAsync(uri);
+            csvFileName = await DownloadFileAsync(uri, true, cancellationToken);
             if (!File.Exists(csvFileName))
             {
                 throw new RebrickableCsvException($"Failed to download a file for {typeof(T)} from {uri}");
             }
-            return await ParseAsync<T>(csvFileName);
+            return await ParseAsync<T>(csvFileName, cancellationToken);
         }
         finally
         {
@@ -104,7 +104,7 @@ public class RebrickableCsvLoader : IRebrickableCsvLoader
         }
     }
 
-    private static async Task<string> DecompressFileAsync(string gzipFileName)
+    private static async Task<string> DecompressFileAsync(string gzipFileName, CancellationToken cancellationToken = default)
     {
         var path = Path.GetTempFileName();
         using (var originalFileStream = new FileStream(gzipFileName, FileMode.Open, FileAccess.Read))
@@ -113,7 +113,11 @@ public class RebrickableCsvLoader : IRebrickableCsvLoader
             {
                 using (var decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
                 {
+#if HAVE_STREAM_COPY_TO_ASYNC_CANCELLATION_TOKEN
+                    await decompressionStream.CopyToAsync(decompressedFileStream, cancellationToken);
+#else
                     await decompressionStream.CopyToAsync(decompressedFileStream);
+#endif
                 }
             }
         }
@@ -138,25 +142,28 @@ public class RebrickableCsvLoader : IRebrickableCsvLoader
         return new Uri(_downloadBaseUri, resource + ".csv.gz");
     }
 
-    private async Task<string> DownloadFileAsync(Uri uri, bool decompress = true)
+    private async Task<string> DownloadFileAsync(Uri uri, bool decompress = true, CancellationToken cancellationToken = default)
     {
         string? outputFile = null;
         string? tempFile = null;
         try
         {
-            using (var response = await _httpClient.GetAsync(uri))
+            using (var response = await _httpClient.GetAsync(uri, cancellationToken))
             {
                 response.EnsureSuccessStatusCode();
-                byte[] fileContents = await response.Content.ReadAsByteArrayAsync();
 
                 tempFile = Path.GetTempFileName();
                 using (var fileStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                 {
+#if HAVE_HTTP_CONTENT_COPY_TO_CANCELLATION_TOKEN
+                    await response.Content.CopyToAsync(fileStream, cancellationToken);
+#else
                     await response.Content.CopyToAsync(fileStream);
+#endif
                 }
                 if (decompress)
                 {
-                    outputFile = await DecompressFileAsync(tempFile);
+                    outputFile = await DecompressFileAsync(tempFile, cancellationToken);
                 }
                 else
                 {
