@@ -3,7 +3,7 @@
 namespace RebrickableSharp.Client;
 public class Set
 {
-    [JsonPropertyName("set_num")] 
+    [JsonPropertyName("set_num")]
     public string SetNum { get; set; } = null!;
 
     [JsonPropertyName("name")]
@@ -22,8 +22,8 @@ public class Set
     public string SetImageURL { get; set; } = null!;
 
     [JsonPropertyName("set_url")]
-    public string SetURL { get; set; } = null!;
+    public string? SetURL { get; set; } = null;
 
     [JsonPropertyName("last_modified_dt")]
-    public DateTime? LastModified { get; set; } = null!;
+    public DateTime? LastModified { get; set; } = null;
 }

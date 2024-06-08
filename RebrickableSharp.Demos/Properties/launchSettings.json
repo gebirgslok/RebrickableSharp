@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Csv Demo": {
+      "commandName": "Project",
+      "commandLineArgs": "csv"
+    },
+    "Json Demo": {
+      "commandName": "Project"
+    }
+  }
+}

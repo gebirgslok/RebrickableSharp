@@ -140,6 +140,26 @@ internal sealed class RebrickableClient : IRebrickableClient
         _isDisposed = true;
     }
 
+    public async Task<PagedResponse<Theme>> GetThemesAsync(int page = 1, int pageSize = 100,
+        RebrickableCredentials? credentials = null,
+        CancellationToken cancellationToken = default)
+    {
+        var uriBuilder = new UriBuilder(new Uri(_baseUri, "lego/themes/"));
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        query["page"] = page.ToString();
+        query["page_size"] = pageSize.ToString();
+        uriBuilder.Query = query.ToString();
+        var url = uriBuilder.ToString();
+
+        var getThemesResponse = await ExecuteRequest<PagedResponse<Theme>>(url,
+            HttpMethod.Get,
+            credentials,
+            RebrickableApiResourceType.Theme,
+            cancellationToken);
+
+        return getThemesResponse;
+    }
+
     public async Task<PagedResponse<Color>> GetColorsAsync(int page = 1, int pageSize = 100,
         bool includeDetails = false,
         RebrickableCredentials? credentials = null,
