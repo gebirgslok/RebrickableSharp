@@ -21,6 +21,9 @@ variables:
   rootNamespace: 'RebrickableSharp.Client'
   pathToLibDir: '$(System.DefaultWorkingDirectory)\$(rootNamespace)\'
   pathToLibCsproj: '$(pathToLibDir)$(rootNamespace).csproj'
+  csvNamespace: 'RebrickableSharp.Client.Csv'
+  pathToCsvDir: '$(System.DefaultWorkingDirectory)\$(csvNamespace)\'
+  pathToCsvCsproj: '$(pathToCsvDir)$(csvNamespace).csproj'
   buildScripsPath: "$(System.DefaultWorkingDirectory)/Build"
   directoryBuildPropsPath: "$(System.DefaultWorkingDirectory)/Directory.Build.props"
 
@@ -47,23 +50,38 @@ steps:
       arguments: "-PathToCsprojFile $(directoryBuildPropsPath)"
       
   - task: DotNetCoreCLI@2
-    displayName: Build Solution And Create NuGet Package
+    displayName: Build Solution And Create RebrickableSharp.Client NuGet Package
     inputs:
       command: 'pack'
       packagesToPack: '$(pathToLibCsproj)'
       versioningScheme: 'off'
       packDirectory: $(pathToLibDir)bin\$(buildConfiguration)
 
+  - task: DotNetCoreCLI@2
+    displayName: Build Solution And Create RebrickableSharp.Client.Csv NuGet Package
+    inputs:
+      command: 'pack'
+      packagesToPack: '$(pathToCsvCsproj)'
+      versioningScheme: 'off'
+      packDirectory: $(pathToCsvDir)bin\$(buildConfiguration)
+
   - task: CopyFiles@2
-    displayName: Copy Bin To ArtifactsStagingDirectory
+    displayName: Copy RebrickableSharp.Client Bin To ArtifactsStagingDirectory
     inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
         Contents: $(rootNamespace)\bin\$(BuildConfiguration)\**
-        TargetFolder: '$(Build.ArtifactsStagingDirectory)'      
-
+        TargetFolder: '$(Build.ArtifactsStagingDirectory)'
+        
+  - task: CopyFiles@2
+    displayName: Copy RebrickableSharp.Client.Csv Bin To ArtifactsStagingDirectory
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)'
+      Contents: $(csvNamespace)\bin\$(BuildConfiguration)\**
+      TargetFolder: '$(Build.ArtifactsStagingDirectory)'
+  
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifacts
     inputs:
-        PathtoPublish: '$(Build.ArtifactsStagingDirectory)'
+        PathToPublish: '$(Build.ArtifactsStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'

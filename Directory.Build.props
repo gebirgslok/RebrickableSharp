@@ -6,9 +6,9 @@
     <FileVersion>0.5.0.0</FileVersion>
     <InformationalVersion>0.5.0.0</InformationalVersion>
     <PackageVersion>0.5.0</PackageVersion>
-    <Authors>Jens Eisenbach</Authors>
+    <Authors>RebrickableSharp contributors</Authors>
     <Product>RebrickableSharp</Product>
-    <Copyright>Copyright © Jens Eisenbach 2022-2024</Copyright>
+    <Copyright>Copyright © RebrickableSharp contributors 2022-2024</Copyright>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
