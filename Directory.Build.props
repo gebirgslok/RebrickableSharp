@@ -2,10 +2,10 @@
   <PropertyGroup>
     <LangVersion>10.0</LangVersion>
     <!-- version numbers will be updated by build -->
-    <Version>0.5.0.0</Version>
-    <FileVersion>0.5.0.0</FileVersion>
-    <InformationalVersion>0.5.0.0</InformationalVersion>
-    <PackageVersion>0.5.0</PackageVersion>
+    <Version>0.6.0.0</Version>
+    <FileVersion>0.6.0.0</FileVersion>
+    <InformationalVersion>0.6.0.0</InformationalVersion>
+    <PackageVersion>0.6.0</PackageVersion>
     <Authors>RebrickableSharp contributors</Authors>
     <Product>RebrickableSharp</Product>
     <Copyright>Copyright © RebrickableSharp contributors 2022-2024</Copyright>

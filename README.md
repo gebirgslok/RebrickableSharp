@@ -182,6 +182,7 @@ var element = await client.GetElementAsync(elementId);
 ### Minifigs
 
 ```csharp
+// API
 Task<Minifig> GetMinifigByIdAsync(
     string minifigId,
     RebrickableCredentials? credentials = null,
