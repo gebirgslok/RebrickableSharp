@@ -2,8 +2,6 @@
 
 public class RebrickableCsvException : Exception
 {
-    public RebrickableCsvException(string message) : base(message)
-    {
-
-    }
+    public RebrickableCsvException(string message)
+        : base(message) { }
 }

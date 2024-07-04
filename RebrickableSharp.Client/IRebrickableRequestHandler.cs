@@ -27,13 +27,18 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RebrickableSharp.Client
 {
     public interface IRebrickableRequestHandler
     {
-        Task OnRequestAsync(RebrickableApiResourceType resourceType, HttpVerb verb, string? apiKey, CancellationToken ct);
+        Task OnRequestAsync(
+            RebrickableApiResourceType resourceType,
+            HttpVerb verb,
+            string? apiKey,
+            CancellationToken ct
+        );
     }
 }

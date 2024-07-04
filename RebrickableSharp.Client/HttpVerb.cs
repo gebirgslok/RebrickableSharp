@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace RebrickableSharp.Client;
+
 public enum HttpVerb
 {
     Get,

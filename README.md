@@ -178,3 +178,18 @@ Task<Element> GetElementAsync(string elementId,
 var elementId = "300521"; //1x1 Brick in Red
 var element = await client.GetElementAsync(elementId);
 ```
+
+### Minifigs
+
+```csharp
+Task<Minifig> GetMinifigByIdAsync(
+    string minifigId,
+    RebrickableCredentials? credentials = null,
+    CancellationToken cancellationToken = default);
+```
+
+```csharp
+// Example
+var minifigId = "fig-000001"; //Toy Store Employee, note that minifigId is named 'set_num' in the API docs.
+var minifig = await client.GetMinifigByIdAsync(minifigId);
+```

@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.6.0
+- New method on *IRebrickableClient*: **GetMinifigByIdAsync**. Returns a minifig by its ID.
+
 ### 0.5.0
 - Added a new separate project and Nuget package for a **RebrickableCsvLoader** loader class which allows downloading and parsing CSV bulk files directly from the Rebrickable CDN, see the demo project for usage.
 - New method on *IRebrickableClient*: **GetThemesAsync**. Returns all themes list.

@@ -29,9 +29,8 @@ namespace RebrickableSharp.Client;
 
 public class RebrickableMissingCredentialsException : Exception
 {
-    public RebrickableMissingCredentialsException(IReadOnlyList<string> missingParams) : base(BuildMessage(missingParams))
-    {
-    }
+    public RebrickableMissingCredentialsException(IReadOnlyList<string> missingParams)
+        : base(BuildMessage(missingParams)) { }
 
     private static string BuildMessage(IReadOnlyList<string> missingParams)
     {

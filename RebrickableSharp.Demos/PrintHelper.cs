@@ -31,7 +31,10 @@ internal static class PrintHelper
 {
     public static void PrintAsJson(object data)
     {
-        var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(
+            data,
+            new JsonSerializerOptions { WriteIndented = true }
+        );
         Console.WriteLine(json);
     }
 }

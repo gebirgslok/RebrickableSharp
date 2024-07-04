@@ -32,7 +32,9 @@ internal static class Program
 {
     static async Task<int> Main(string[] args)
     {
-        var jsonDemo = args.Length == 0 || args[0]?.Equals("csv", StringComparison.InvariantCultureIgnoreCase) != true;
+        var jsonDemo =
+            args.Length == 0
+            || args[0]?.Equals("csv", StringComparison.InvariantCultureIgnoreCase) != true;
         if (jsonDemo)
         {
             return await JsonDemo();
@@ -45,7 +47,8 @@ internal static class Program
 
     static async Task<int> JsonDemo()
     {
-        RebrickableClientConfiguration.Instance.ApiKey = Environment.GetEnvironmentVariable("REBRICKABLE_API_KEY") ?? "<YOUR API KEY>";
+        RebrickableClientConfiguration.Instance.ApiKey =
+            Environment.GetEnvironmentVariable("REBRICKABLE_API_KEY") ?? "<YOUR API KEY>";
         //await PartDemos.GetPartsDemo();
         await PartDemos.GetPartsTestGithubIssue1();
         //await PartDemos.FindPartByBrickLinkIdDemo();

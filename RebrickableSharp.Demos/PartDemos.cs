@@ -33,18 +33,22 @@ internal static class PartDemos
     {
         using var client = RebrickableClientFactory.Build();
 
-        var response1 = await client.GetPartsAsync(includeDetails: true,
+        var response1 = await client.GetPartsAsync(
+            includeDetails: true,
             page: 1,
             pageSize: 10,
-            bricklinkId: "3001");
+            bricklinkId: "3001"
+        );
 
         PrintHelper.PrintAsJson(response1);
         Console.WriteLine();
 
-        var response2 = await client.GetPartsAsync(includeDetails: true, 
-            page: 1, 
-            pageSize: 10, 
-            partNumbers: new[]{ "3001", "3002", "3003"});
+        var response2 = await client.GetPartsAsync(
+            includeDetails: true,
+            page: 1,
+            pageSize: 10,
+            partNumbers: new[] { "3001", "3002", "3003" }
+        );
 
         PrintHelper.PrintAsJson(response2);
         Console.WriteLine();
@@ -55,24 +59,31 @@ internal static class PartDemos
     {
         using var client = RebrickableClientFactory.Build();
 
-        var part = await client.GetPartsAsync(page: 1, pageSize: 10, includeDetails: true, bricklinkId: "3001");
+        var part = await client.GetPartsAsync(
+            page: 1,
+            pageSize: 10,
+            includeDetails: true,
+            bricklinkId: "3001"
+        );
 
         PrintHelper.PrintAsJson(part!);
         Console.WriteLine();
     }
 
-    public static async Task FindPartByBrickLinkIdDemo(string? brickLinkNo = null, string? apiKey = null)
+    public static async Task FindPartByBrickLinkIdDemo(
+        string? brickLinkNo = null,
+        string? apiKey = null
+    )
     {
         using var client = RebrickableClientFactory.Build();
 
-        var credentials = apiKey == null
-            ? null
-            : new RebrickableCredentials
-            {
-                ApiKey = apiKey
-            };
+        var credentials = apiKey == null ? null : new RebrickableCredentials { ApiKey = apiKey };
 
-        var part = await client.FindPartByBricklinkIdAsync(brickLinkNo ?? "3005", true, credentials: credentials);
+        var part = await client.FindPartByBricklinkIdAsync(
+            brickLinkNo ?? "3005",
+            true,
+            credentials: credentials
+        );
 
         PrintHelper.PrintAsJson(part!);
         Console.WriteLine();

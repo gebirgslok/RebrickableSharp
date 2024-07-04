@@ -4,12 +4,19 @@ namespace RebrickableSharp.Client;
 
 public static class RebrickableCsvLoaderFactory
 {
-    private static IRebrickableCsvLoader Build(HttpClient httpClient, bool disposeHttpClient, string baseUriString = RebrickableCsvLoader.DefaultBaseUri)
+    private static IRebrickableCsvLoader Build(
+        HttpClient httpClient,
+        bool disposeHttpClient,
+        string baseUriString = RebrickableCsvLoader.DefaultBaseUri
+    )
     {
         return new RebrickableCsvLoader(httpClient, disposeHttpClient, baseUriString);
     }
 
-    public static IRebrickableCsvLoader Build(HttpClient httpClient, string baseUriString = RebrickableCsvLoader.DefaultBaseUri)
+    public static IRebrickableCsvLoader Build(
+        HttpClient httpClient,
+        string baseUriString = RebrickableCsvLoader.DefaultBaseUri
+    )
     {
         return Build(httpClient, false, baseUriString);
     }

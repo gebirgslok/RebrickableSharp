@@ -33,9 +33,7 @@ internal static class ColorDemos
     {
         using var client = RebrickableClientFactory.Build();
 
-        var response1 = await client.GetColorsAsync(includeDetails: true,
-            page: 1,
-            pageSize: 10);
+        var response1 = await client.GetColorsAsync(includeDetails: true, page: 1, pageSize: 10);
 
         PrintHelper.PrintAsJson(response1);
         Console.WriteLine();

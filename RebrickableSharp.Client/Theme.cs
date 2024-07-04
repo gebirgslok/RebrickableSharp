@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace RebrickableSharp.Client;
+
 public class Theme
 {
     [JsonPropertyName("id")]

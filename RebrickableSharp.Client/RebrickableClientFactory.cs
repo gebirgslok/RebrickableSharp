@@ -27,12 +27,19 @@ namespace RebrickableSharp.Client;
 
 public static class RebrickableClientFactory
 {
-    private static IRebrickableClient Build(HttpClient httpClient, bool disposeHttpClient, IRebrickableRequestHandler? requestHandler = null)
+    private static IRebrickableClient Build(
+        HttpClient httpClient,
+        bool disposeHttpClient,
+        IRebrickableRequestHandler? requestHandler = null
+    )
     {
         return new RebrickableClient(httpClient, disposeHttpClient, requestHandler);
     }
 
-    public static IRebrickableClient Build(HttpClient httpClient, IRebrickableRequestHandler? requestHandler = null)
+    public static IRebrickableClient Build(
+        HttpClient httpClient,
+        IRebrickableRequestHandler? requestHandler = null
+    )
     {
         return Build(httpClient, false, requestHandler);
     }

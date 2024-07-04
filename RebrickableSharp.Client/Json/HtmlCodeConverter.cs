@@ -30,7 +30,11 @@ namespace RebrickableSharp.Client.Json;
 
 internal class HtmlCodeConverter : JsonConverter<string>
 {
-    public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override string Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
     {
         var stringValue = reader.GetString()!;
         return stringValue.StartsWith("#") ? stringValue : $"#{stringValue}";

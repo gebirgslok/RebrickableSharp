@@ -28,9 +28,8 @@ namespace RebrickableSharp.Client;
 public class RebrickableClientConfiguration : RebrickableCredentials
 {
     private static RebrickableClientConfiguration? _instance;
-    public static RebrickableClientConfiguration Instance => _instance ??= new RebrickableClientConfiguration(); 
+    public static RebrickableClientConfiguration Instance =>
+        _instance ??= new RebrickableClientConfiguration();
 
-    private RebrickableClientConfiguration()
-    {
-    }
+    private RebrickableClientConfiguration() { }
 }
