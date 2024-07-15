@@ -304,6 +304,26 @@ internal sealed class RebrickableClient : IRebrickableClient
         return partColorDetails;
     }
 
+
+    public async Task<PagedResponse<PartColor>> GetPartColorsAsync(
+        string partNumber,
+        RebrickableCredentials? credentials = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var url = new Uri(_baseUri, $"lego/parts/{partNumber}/colors/").ToString();
+
+        var partColors = await ExecuteRequest<PagedResponse<PartColor>>(
+            url,
+            HttpMethod.Get,
+            credentials,
+            RebrickableApiResourceType.Part,
+            cancellationToken
+        );
+
+        return partColors;
+    }
+
     public async Task<Element> GetElementAsync(
         string elementId,
         RebrickableCredentials? credentials = null,
