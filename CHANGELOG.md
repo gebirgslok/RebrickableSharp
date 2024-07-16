@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.7.0
+- New method on *IRebrickableClient*: **GetPartColorsAsync**, thanks to [stephanstapel](https://github.com/stephanstapel)
+
 ### 0.6.0
 - New method on *IRebrickableClient*: **GetMinifigByIdAsync**. Returns a minifig by its ID.
 
