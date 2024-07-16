@@ -1,6 +1,7 @@
 # Changelog
 
 ### 0.7.0
+- Updated System.Text.Json NuGet dependency to v8.0.4 for .netstandard targets, see https://github.com/advisories/GHSA-hh2w-p6rv-4g7w
 - New method on *IRebrickableClient*: **GetPartColorsAsync**, thanks to [stephanstapel](https://github.com/stephanstapel)
 
 ### 0.6.0
