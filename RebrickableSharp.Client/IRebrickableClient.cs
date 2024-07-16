@@ -65,6 +65,12 @@ public interface IRebrickableClient : IDisposable
         CancellationToken cancellationToken = default
     );
 
+    Task<PagedResponse<PartColor>> GetPartColorsAsync(
+        string partNumber,
+        RebrickableCredentials? credentials = null,
+        CancellationToken cancellationToken = default
+    );
+
     Task<PartColorDetails> GetPartColorDetailsAsync(
         string partNumber,
         int colorId,
